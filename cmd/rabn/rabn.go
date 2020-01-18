@@ -7,13 +7,13 @@ import (
 )
 
 const (
-	version = "0.1.0"
+	version = "0.1.1"
 )
 
-type args struct{
-	HistoryFile string `arg:"-H,required"`
-	PathSpec []string `arg:"-p,required,separate"`
-	Selection string `arg:"positional" default:""`
+type args struct {
+	HistoryFile string   `arg:"-H,required"`
+	PathSpec    []string `arg:"-p,required,separate"`
+	Selection   string   `arg:"positional" default:""`
 }
 
 func (args) Version() string {
@@ -23,7 +23,7 @@ func (args) Version() string {
 func main() {
 	var args args
 	arg.MustParse(&args)
-	prefix :=  rabn.FindLongestCommonPrefix(args.PathSpec)
+	prefix := rabn.FindLongestCommonPrefix(args.PathSpec)
 	h, err := rabn.HistoryFromFile(args.HistoryFile, prefix)
 	mare.PanicIfErr(err)
 	if args.Selection == "" {

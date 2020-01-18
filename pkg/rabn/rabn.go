@@ -137,6 +137,16 @@ func getOrderedItems(h History) (orderedItems []string) {
 }
 
 func initHistory(historyFile, prefix string) (h History, err error) {
+	dir := path.Dir(historyFile)
+	_, err = os.Stat(dir)
+	if os.IsNotExist(err) {
+		err = os.MkdirAll(dir, directoryPermissions)
+		if err != nil {
+			return h, fmt.Errorf("error creating history file: %s", err)
+		}
+	} else if err != nil {
+		return h, fmt.Errorf("error creating history file: %s", err)
+	}
 	file, err := os.OpenFile(historyFile, os.O_CREATE|os.O_WRONLY, filePermissions)
 	if err != nil {
 		return h, fmt.Errorf("error creating history file: %s", err)
